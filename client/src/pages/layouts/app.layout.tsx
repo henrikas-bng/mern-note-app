@@ -1,18 +1,16 @@
-import NavbarComponent from '../../components/navbar.component';
-import FooterComponent from '../../components/footer.component';
+import Navbar from '../../components/navbar';
+import Footer from '../../components/footer';
 
 function AppLayout({ children }: any) {
     return (
         <>
             <header>
-                <NavbarComponent />
+                <Navbar />
             </header>
-            <main className='py-4'>
+            <main className='pt-8 pb-16'>
                 {children}
             </main>
-            <footer>
-                <FooterComponent />
-            </footer>
+            <Footer />
         </>
     );
 }

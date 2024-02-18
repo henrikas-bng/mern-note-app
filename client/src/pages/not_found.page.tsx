@@ -1,12 +1,11 @@
-import { Container } from 'react-bootstrap';
 import AppLayout from './layouts/app.layout';
 
 function NotFoundPage() {
     return (
         <AppLayout>
-            <Container>
+            <div className='container mx-auto px-4'>
                 <p>404 Page Not Found!</p>
-            </Container>
+            </div>
         </AppLayout>
     );
 }

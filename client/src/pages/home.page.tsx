@@ -1,12 +1,11 @@
-import { Container } from 'react-bootstrap';
 import AppLayout from './layouts/app.layout';
 
 function HomePage() {
     return (
         <AppLayout>
-            <Container>
+            <div className='container mx-auto px-4'>
                 <p>Hello World!</p>
-            </Container>
+            </div>
         </AppLayout>
     );
 }

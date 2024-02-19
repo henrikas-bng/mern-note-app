@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Alert from '../../components/alert';
 import Button from '../../components/button';
 import Input from '../../components/input';
@@ -6,10 +6,11 @@ import logo from '../../logo.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { validateUserRegister } from '../../utils/format.validation';
+import { useUserContext } from '../../components/user_context';
 
 function RegisterPage() {
     const navigate = useNavigate();
-
+    const userContext = useUserContext();
     const [alertVisibility, setAlertVisibility] = useState(false);
     const [isPswConfirmValid, setPswConfirmValid] = useState<boolean|undefined>(undefined);
 
@@ -78,6 +79,11 @@ function RegisterPage() {
         inputPasswordConf.value = '';
         setPswConfirmValid(undefined);
     };
+
+    useEffect(() => {
+        if (userContext)
+            navigate('/');
+    }, [navigate, userContext]);
 
     return (
         <main className='flex justify-center items-center min-h-screen py-12'>

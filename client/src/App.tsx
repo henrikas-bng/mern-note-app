@@ -4,6 +4,7 @@ import LoginPage from './pages/auth/login.page';
 import RegisterPage from './pages/auth/register.page';
 import LogoutPage from './pages/auth/logout.page';
 import HomePage from './pages/home.page';
+import NotesPage from './pages/notes.page';
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 				<Route path='/logout' element={<LogoutPage />} />
 
 				<Route index element={<HomePage />} />
+				<Route path='/notes' element={<NotesPage />} />
 
 				<Route path='*' element={<NotFoundPage />} />
 

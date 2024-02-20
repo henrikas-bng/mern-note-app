@@ -6,8 +6,15 @@ import MobileMenu from './mobile_menu';
 function Navbar() {
     const [mobileMenuVisibility, setMobileMenuVisibility] = useState(false);
 
-    const handleMobileMenuOpen = () => setMobileMenuVisibility(true);
-    const handleMobileMenuClose = () => setMobileMenuVisibility(false);
+    const handleMobileMenuOpen = () => {
+        setMobileMenuVisibility(true);
+        document.body.classList.add('overflow-hidden');
+    };
+
+    const handleMobileMenuClose = () => {
+        setMobileMenuVisibility(false);
+        document.body.classList.remove('overflow-hidden');
+    };
 
 	return (
 		<nav className='bg-slate-800 text-slate-200 py-4'>

@@ -16,6 +16,19 @@ function Input(props: IProps) {
         }
     };
 
+    if (props.type === 'textarea')
+        return (
+            <textarea 
+                id={props.id}
+                name={props.name}
+                placeholder={props.placeholder}
+                defaultValue={props.defaultValue}
+                className={`min-h-[64px] max-h-[128px] ring-0 border focus:outline-sky-400/25 transition duration-150 rounded px-4 py-2 ${props.className}`}
+            >
+                {props.children}
+            </textarea>
+        );
+
     return (
         <input 
             {... props}

@@ -8,16 +8,15 @@ import { isNoteContentValid } from '../utils/format.validation';
 
 export const getById: RequestHandler<IReqNoteParams, unknown, unknown, unknown> = async (req, res, next) => {
     const noteId = req.params.noteId;
-    const userId = req.session.userId;
 
     try {
-        if (!userId || !noteId)
+        if (!noteId)
             throw createHttpError(400, 'Missing parameters!');
 
-        if (!mongoose.isValidObjectId(userId) || !mongoose.isValidObjectId(noteId))
+        if (!mongoose.isValidObjectId(noteId))
             throw createHttpError(400, 'Invalid parameters!');
 
-        const note = await Note.findOne({ userId: userId, _id: noteId }).exec();
+        const note = await Note.findOne({ userId: req.session.userId, _id: noteId }).exec();
 
         if (!note)
             throw createHttpError(404, 'Note not found!');
@@ -28,16 +27,9 @@ export const getById: RequestHandler<IReqNoteParams, unknown, unknown, unknown> 
     }
 };
 
-export const getAll: RequestHandler = async (req, res, next) => {
-    const userId = req.session.userId;
+export const getAll: RequestHandler = async (req, res, next) => {    
     try {
-        if (!userId)
-            throw createHttpError(400, 'Missing parameters!');
-
-        if (!mongoose.isValidObjectId(userId))
-            throw createHttpError(400, 'Invalid parameters!');
-
-        const notes = await Note.find({ userId: userId }).exec();
+        const notes = await Note.find({ userId: req.session.userId }).exec();
 
         if (!notes)
             throw createHttpError(404, 'No notes found!');
@@ -49,22 +41,18 @@ export const getAll: RequestHandler = async (req, res, next) => {
 };
 
 export const create: RequestHandler<unknown, unknown, IReqNoteBody, unknown> = async (req, res, next) => {
-    const userId = req.session.userId;
     const content = req.body.content;
     const isImportant = req.body.isImportant || false;
 
     try {
-        if (!userId || !content)
+        if (!content)
             throw createHttpError(400, 'Missing parameters!');
-
-        if (!mongoose.isValidObjectId(userId))
-            throw createHttpError(400, 'Invalid parameters!');
 
         if (!isNoteContentValid(content))
             throw createHttpError(400, 'Invalid data!');
 
         const newNote = await Note.create({
-            userId: userId,
+            userId: req.session.userId,
             content: content,
             isImportant: isImportant,
         });
@@ -76,22 +64,21 @@ export const create: RequestHandler<unknown, unknown, IReqNoteBody, unknown> = a
 };
 
 export const update: RequestHandler<IReqNoteParams, unknown, IReqNoteBody, unknown> = async (req, res, next) => {
-    const userId = req.session.userId;
     const noteId = req.params.noteId;
     const content = req.body.content;
     const isImportant = req.body.isImportant || false;
 
     try {
-        if (!userId || !noteId || !content)
+        if (!noteId || !content)
             throw createHttpError(400, 'Missing parameters!');
 
-        if (!mongoose.isValidObjectId(userId) || !mongoose.isValidObjectId(noteId))
+        if (!mongoose.isValidObjectId(noteId))
             throw createHttpError(400, 'Invalid parameters!');
 
         if (!isNoteContentValid(content))
             throw createHttpError(400, 'Invalid data!');
 
-        const note = await Note.findOne({ userId: userId, _id: noteId }).exec();
+        const note = await Note.findOne({ userId: req.session.userId, _id: noteId }).exec();
 
         if (!note)
             throw createHttpError(404, 'Note not found!');
@@ -123,17 +110,16 @@ export const update: RequestHandler<IReqNoteParams, unknown, IReqNoteBody, unkno
 };
 
 export const destroy: RequestHandler<IReqNoteParams, unknown, unknown, unknown> = async (req, res, next) => {
-    const userId = req.session.userId;
     const noteId = req.params.noteId;
 
     try {
-        if (!userId || !noteId)
+        if (!noteId)
             throw createHttpError(400, 'Missing parameters!');
 
-        if (!mongoose.isValidObjectId(userId) || !mongoose.isValidObjectId(noteId))
+        if (!mongoose.isValidObjectId(noteId))
             throw createHttpError(400, 'Invalid parameters!');
         
-        await Note.findOneAndDelete({ userId: userId, _id: noteId }).exec();
+        await Note.findOneAndDelete({ userId: req.session.userId, _id: noteId }).exec();
         
         res.sendStatus(200);
     } catch (error) {
